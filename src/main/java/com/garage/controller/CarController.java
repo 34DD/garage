@@ -30,7 +30,7 @@ public class CarController {
         return ResponseEntity.ok(listCar);
     }
 
-    @PostMapping("/cars")
+    @PostMapping
     public ResponseEntity<Car> ajouterCar(@RequestBody Car car){
         Car c = carService.saveCar(car);
         return ResponseEntity.status(HttpStatus.CREATED).body(c);
