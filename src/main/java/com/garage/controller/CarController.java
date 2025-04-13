@@ -31,9 +31,9 @@ public class CarController {
     }
 
     @GetMapping("/{immatriculation}")
-    public ResponseEntity<Car> getOneCar(@PathVariable String immatriculation){
-        Car car = carService.getCar(immatriculation);
-        return ResponseEntity.ok(car);
+    public ResponseEntity<Car> RechercheCar(@PathVariable String immatriculation){
+        Car car = carService.getOneCar(immatriculation);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(car);
     }
 
     @PostMapping

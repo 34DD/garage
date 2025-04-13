@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface ICarService {
 
     Car saveCar (Car car);
-//    Car getOneCar (String immatriculation);
+    Car getOneCar (String immatriculation);
     Collection<Car> listeCar();
     Car updateCar(String immatriculation,Car car);
     void deleteCar(String immatriculation);

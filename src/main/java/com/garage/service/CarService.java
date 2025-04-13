@@ -16,6 +16,7 @@ public class CarService implements ICarService {
         Car existing = carRepository.findById(immatriculation).orElseThrow(()->new RuntimeException("Aucun car trouvé"));
         return existing;
     }
+
     @Override
     public Car saveCar(Car car) {
         return (Car) carRepository.save(car);
@@ -42,8 +43,15 @@ public class CarService implements ICarService {
     public void deleteCar(String immatriculation) {
         Car existing = getCar(immatriculation);
         existing.setDeleted(true);
-        carRepository.save(existing);
 
+        carRepository.save(existing);
+    }
+
+    @Override
+    public Car getOneCar(String immatriculation){
+    /**    return List.of(carRepository.getAllCars().toArray(new Car[0]));*/
+        Car existing = getCar(immatriculation);
+        return existing;
     }
 
 }
