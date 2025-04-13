@@ -42,7 +42,7 @@ public class CarService implements ICarService {
     public void deleteCar(String immatriculation) {
         Car existing = getCar(immatriculation);
         existing.setDeleted(true);
-        carRepository.delete(existing);
+        carRepository.save(existing);
 
     }
 

@@ -30,6 +30,12 @@ public class CarController {
         return ResponseEntity.ok(listCar);
     }
 
+    @GetMapping("/{immatriculation}")
+    public ResponseEntity<Car> getOneCar(@PathVariable String immatriculation){
+        Car car = carService.getCar(immatriculation);
+        return ResponseEntity.ok(car);
+    }
+
     @PostMapping
     public ResponseEntity<Car> ajouterCar(@RequestBody Car car){
         Car c = carService.saveCar(car);
@@ -42,7 +48,7 @@ public class CarController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(car);
     }
 
-    @DeleteMapping("/cars/{immatriculation}")
+    @DeleteMapping(" /{immatriculation}")
     public ResponseEntity<Object> suprimerCar(@PathVariable String immatriculation){
         carService.deleteCar(immatriculation);
         return ResponseEntity.noContent().build();
