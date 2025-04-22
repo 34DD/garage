@@ -2,7 +2,7 @@ package com.garage.controller;
 
 
 import com.garage.entity.Car;
-import com.garage.service.CarService;
+import com.garage.service.CarServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class CarController {
 
-    private CarService carService;
+    private CarServiceImpl carService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarServiceImpl carService) {
         this.carService = carService;
     }
 

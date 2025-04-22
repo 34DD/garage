@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table (name="car")
@@ -20,8 +21,18 @@ public class Car implements Serializable {
     private String marque;
     @Column(nullable = false,length = 150)
     private String modele;
-    @Column(nullable = false,length = 25)
-    private String etat;
+
+    @ManyToOne
+    @JoinColumn()
+    private Etat etat;
 
     private boolean isDeleted;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    @OneToMany(mappedBy = "car")
+    private List<Entretien> entretiens;
+
 }
