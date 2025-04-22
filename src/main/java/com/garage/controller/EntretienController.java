@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/Entretiens")
+@RequestMapping("/entretiens")
 @RequiredArgsConstructor
 public class EntretienController {
     private EntretienServiceImpl entretienService;

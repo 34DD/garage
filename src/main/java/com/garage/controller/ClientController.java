@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/Clients")
+@RequestMapping("/clients")
 @RequiredArgsConstructor
 public class ClientController {
     private ClientServiceImpl clientService;
