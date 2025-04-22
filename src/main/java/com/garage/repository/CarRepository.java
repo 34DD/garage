@@ -11,4 +11,6 @@ import java.util.*;
 public interface CarRepository extends JpaRepository<Car,String>  {
     @Query("select c from Car c where c.isDeleted = false")
     Collection<Car> getAllCars();
+
+    String immatriculation(String immatriculation);
 }
