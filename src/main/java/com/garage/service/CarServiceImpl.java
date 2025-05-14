@@ -1,9 +1,11 @@
 package com.garage.service;
 
 import com.garage.entity.Car;
+import com.garage.entity.Client;
 import com.garage.entity.Etat;
 import com.garage.entity.enummeration.Etats;
 import com.garage.repository.CarRepository;
+import com.garage.repository.ClientRepository;
 import com.garage.repository.EtatRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ public class CarServiceImpl implements ICarService {
     @Autowired
     private CarRepository carRepository;
     @Autowired
+    private ClientRepository clientRepository;
+    @Autowired
     private EtatRepository etatRepository;
 
     private Car getCar(String immatriculation) {
@@ -23,40 +27,19 @@ public class CarServiceImpl implements ICarService {
 
     @Override
     public Car saveCar(Car car) {
+        Set<Etat> etats = etatRepository.getEtatByisDeleted(false);
 
-        Set<String> etats = etatRepository.getEtatByisDeleted(false);
-        Set<Etat> listEtats = new HashSet<>();
+        Etat etat = etatRepository.findByLibelle(Etats.EN_FILE_D_ATTENTE)
+                .orElseThrow(() -> new RuntimeException("Etat par défaut introuvable"));
+        car.setEtat(etat);
 
-        if(etats == null){
-            Etat etatCar = etatRepository.findByLibelle(Etats.EN_FILE_d_ATTENTE)
-                    .orElseThrow(() -> new RuntimeException("Error: Cette etat n'existe pas"));
+        Client client = clientRepository.findById(car.getClient().getId())
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+        car.setClient(client);
 
-            listEtats.add(etatCar);
-        }else{
-            etats.forEach(r -> {
-                switch (r){
-                    case "Mis à disposition" -> {
-                        Etat etatCar = etatRepository.findByLibelle(Etats.Mis_A_DISPOSITION)
-                                .orElseThrow(() -> new RuntimeException("Error: Ce role n'existe pas"));
-                        listEtats.add(etatCar);
-                    }
-                    case "Prix en Charge" -> {
-                        Etat etatCar = etatRepository.findByLibelle(Etats.PRIS_EN_CHARGE)
-                                .orElseThrow(() -> new RuntimeException("Error: Ce role n'existe pas"));
-                        listEtats.add(etatCar);
-                    }
-                    default -> {
-                        Etat etatCar = etatRepository.findByLibelle(Etats.EN_FILE_d_ATTENTE)
-                                .orElseThrow(() -> new RuntimeException("Error: Ce role n'existe pas"));
-                        listEtats.add(etatCar);
-                    }
-                }
-            });
-        }
-        car.setEtat((Etat) listEtats);
         return carRepository.save(car);
-    }
 
+    }
     @Override
     public Collection<Car> listeCar() {
     //*** return List.of(carRepository.getAllCars().toArray(new Car[0]));*/
@@ -66,30 +49,41 @@ public class CarServiceImpl implements ICarService {
     @Override
     public Car updateCar(String immatriculation, Car car) {
 
-        Car existing = getCar(immatriculation);
+        Car existing = getCar(immatriculation); // Récupération via immatriculation unique
         existing.setMarque(car.getMarque());
         existing.setModele(car.getModele());
+        // Ajoute ici d'autres champs si besoin
 
-        Set<String> etats = etatRepository.getEtatByisDeleted(true);
+        /*Set<Etat> etats = etatRepository.getEtatByisDeleted(false);
+        Etat etatCar;
 
-        etats.forEach(r -> {
-            switch (r){
-                case "Mis à disposition" -> {
-                    Etat etatCar = etatRepository.findByLibelle(Etats.Mis_A_DISPOSITION)
-                            .orElseThrow(() -> new RuntimeException("Error: Ce role n'existe pas"));
-                }
-                case "Prix en Charge" -> {
-                    Etat etatCar = etatRepository.findByLibelle(Etats.PRIS_EN_CHARGE)
-                            .orElseThrow(() -> new RuntimeException("Error: Ce role n'existe pas"));
-                }
-                default -> {
-                    Etat etatCar = etatRepository.findByLibelle(Etats.EN_FILE_d_ATTENTE)
-                            .orElseThrow(() -> new RuntimeException("Error: Ce role n'existe pas"));
-                }
+        if (etats == null || etats.isEmpty()) {
+            // Aucun état actif => état par défaut
+            etatCar = etatRepository.findByLibelle(Etats.EN_FILE_D_ATTENTE)
+                    .orElseThrow(() -> new RuntimeException("Erreur : l'état 'En file d'attente' n'existe pas"));
+        } else {
+            Etats selectedLibelle = etats.iterator().next().getLibelle();
+
+            switch (selectedLibelle) {
+                case MIS_A_DISPOSITION -> etatCar = etatRepository.findByLibelle(Etats.MIS_A_DISPOSITION)
+                        .orElseThrow(() -> new RuntimeException("Erreur : l'état 'Mis à disposition' n'existe pas"));
+                case PRIS_EN_CHARGE -> etatCar = etatRepository.findByLibelle(Etats.PRIS_EN_CHARGE)
+                        .orElseThrow(() -> new RuntimeException("Erreur : l'état 'Pris en charge' n'existe pas"));
+                default -> etatCar = etatRepository.findByLibelle(Etats.EN_FILE_D_ATTENTE)
+                        .orElseThrow(() -> new RuntimeException("Erreur : l'état par défaut n'existe pas"));
             }
-        });
-        existing.setEtat((Etat) etats);
+        }*/
 
+
+        Set<Etat> etats = etatRepository.getEtatByisDeleted(false);
+
+        Etat etat = etatRepository.findByLibelle(Etats.EN_FILE_D_ATTENTE)
+                .orElseThrow(() -> new RuntimeException("Etat par défaut introuvable"));
+        existing.setEtat(etat);
+
+        Client client = clientRepository.findById(car.getClient().getId())
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+        existing.setClient(client);
         return carRepository.save(existing);
     }
 

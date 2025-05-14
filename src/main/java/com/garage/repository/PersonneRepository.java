@@ -1,4 +1,4 @@
-package com.garage.repository;
+/*package com.garage.repository;
 
 import com.garage.entity.Personne;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,3 +12,4 @@ public interface PersonneRepository extends JpaRepository<Personne, Long> {
 
     Personne getPersonnesByisDeleted(boolean isDeleted);
 }
+*/

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/Clients")
+@RequestMapping("/clients") 
 @RequiredArgsConstructor
 public class ClientController {
     private ClientServiceImpl clientService;
@@ -39,8 +39,11 @@ public class ClientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Client> RechercheClient(@PathVariable Long id){
-        Client client = clientService.getOneClient(id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(client);
+        ///Client client = clientService.getOneClient(id);
+        /*return ResponseEntity.status(HttpStatus.ACCEPTED).body(client);*/
+        return clientService.getClientById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
