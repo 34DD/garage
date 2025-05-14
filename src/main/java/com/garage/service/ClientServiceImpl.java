@@ -6,19 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientServiceImpl implements IClientService{
     @Autowired
     private ClientRepository clientRepository;
+    public ClientServiceImpl(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
+    }
 
     private Client getClient(Long id){
         return clientRepository.getReferenceById(id);
     }
     @Override
     public Client saveClient(Client client) {
-        return null;
+        return clientRepository.save(client);
     }
 
     @Override
@@ -27,8 +30,18 @@ public class ClientServiceImpl implements IClientService{
     }
 
     @Override
+    public Optional<Client> getClientById(Long id) {
+        return clientRepository.findById(id);
+    }
+
+    @Override
     public Client getOneClient(Long id) {
-        return null;
+        Client c = getClient(id);
+        Boolean test=c.isDeleted();
+        if (test = true){
+            throw new RuntimeException("Aucun Resultat");
+        }
+        return c;
     }
 
     @Override
@@ -39,7 +52,7 @@ public class ClientServiceImpl implements IClientService{
         existing.setNom(client.getNom());
         existing.setEmail(client.getEmail());
         existing.setTelephone(client.getTelephone());
-        existing.setStatusClient(client.getStatusClient());
+        existing.setStatus(client.getStatus());
 
         return clientRepository.save(existing);
     }

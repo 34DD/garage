@@ -1,7 +1,12 @@
 package com.garage.entity.enummeration;
 
-public enum Etats {
-    EN_FILE_d_ATTENTE,
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+
+
+public enum     Etats {
+    @JsonEnumDefaultValue
+    EN_FILE_D_ATTENTE,
     PRIS_EN_CHARGE,
-    Mis_A_DISPOSITION
+    MIS_A_DISPOSITION;
+
 }

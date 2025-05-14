@@ -9,6 +9,6 @@ import java.util.*;
 public interface EtatRepository extends JpaRepository<Etat,Long> {
     Optional<Etat> findByLibelle(Etats libelle);
 
-    Set<String> getEtatByisDeleted(Boolean isDeleted);
+    Set<Etat> getEtatByisDeleted(Boolean isDeleted);
     //Long id(Long id);
 }

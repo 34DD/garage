@@ -23,7 +23,7 @@ public class Car implements Serializable {
     private String modele;
 
     @ManyToOne
-    @JoinColumn()
+    @JoinColumn(name = "etat_id")
     private Etat etat;
 
     private boolean isDeleted;

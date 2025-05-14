@@ -1,4 +1,4 @@
-package com.garage.entity;
+/*package com.garage.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,8 +26,8 @@ public abstract class Personne implements Serializable{
     private String prenom;
     @Column(nullable = false,length = 13)
     private String telephone;
-    @Column(nullable = false,length = 255)
+    @Column(nullable = false,length = 250)
     private String email;
 
     private boolean isDeleted;
-}
+}*/
