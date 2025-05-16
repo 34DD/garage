@@ -1,5 +1,5 @@
 //package com.garage.security;
-
+/*
 @Service
 public class JwtService {
     private final String SECRET_KEY = "G4r4g3JWT2025Garage";
@@ -28,4 +28,4 @@ public class JwtService {
             .parseClaimsJws(token).getBody().getExpiration();
         return expiration.before(new Date());
     }
-}
+}*/

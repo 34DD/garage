@@ -1,12 +1,11 @@
 package com.garage.security;
 
-import com.garage.entity.Role;
 import com.garage.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
@@ -20,10 +19,10 @@ public class CustomUserDetails implements UserDetails {
     // Retourne les rôles de l'utilisateur sous forme de GrantedAuthority
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles()
+        return user.getRoles()      
                    .stream()
                    .map(role -> new SimpleGrantedAuthority(role.getName()))
-                   .collect(Collectors.toSet());
+                   .collect(Collectors.toList());
     }
 
     @Override
@@ -36,28 +35,10 @@ public class CustomUserDetails implements UserDetails {
         return user.getUsername();
     }
 
-    // Ces méthodes permettent d’activer/désactiver l’utilisateur
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    // Ces méthodes permettent d’activer/désactiver l’utilisateur    
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    public User getUser() {
-        return this.user;
-    }
 }

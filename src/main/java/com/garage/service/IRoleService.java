@@ -1,10 +1,10 @@
-package com.garage.security.service;
+package com.garage.service;
 
-import com.garage.domaine.Role;
+import com.garage.entity.Role;
 
 import java.util.Optional;
 
 public interface IRoleService {
     Optional<Role> findByName(String name);
-    Role save(Role role);
+    Role saveRole(Role role);
 }

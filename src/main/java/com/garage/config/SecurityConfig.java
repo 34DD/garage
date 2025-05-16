@@ -1,4 +1,4 @@
-package com.garage.config;
+/*package com.garage.config;
 
 public class SecurityConfig {
     @Autowired private JwtAuthenticationFilter jwtFilter;
@@ -27,4 +27,4 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authProvider;
     }
-}
+}*/

@@ -1,15 +1,14 @@
-package com.garage.security.service;
+package com.garage.service;
 
-import com.garage.security.repository.UserRepository;
-import com.garage.security.entity.User;
-import com.garage.security.service.UserService;
+import com.garage.entity.User;
+import com.garage.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements iUserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
@@ -24,12 +23,12 @@ public class UserServiceImpl implements iUserService {
     }
 
     @Override
-    public User save(User user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
-
+/* 
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
-    }
+    }*/
 }

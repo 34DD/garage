@@ -1,10 +1,24 @@
 package com.garage.controller;
 
-import com.garage.dto.*;
-import com.garage.security.JwtUtils;
+import com.garage.dto.LoginRequest;
+import com.garage.dto.LoginResponse;
+import com.garage.dto.RegisterRequest;
+import com.garage.entity.Role;
+import com.garage.entity.User;
+import com.garage.repository.RoleRepository;
+import com.garage.security.JwtUtil;
+import com.garage.service.UserService;
+import com.garage.service.UserServiceImpl;
+
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.*;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +32,12 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+    
+
+    @Autowired
+    private RoleRepository roleRepository;
+    
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -27,34 +46,32 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            String jwt = jwtUtil.generateToken((UserDetails) authentication.getPrincipal());
-
-            return ResponseEntity.ok(new JwtResponse(jwt));
-
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            var user = userService.findByUsername(loginRequest.getUsername()).get();
+            var token = jwtUtil.generateToken(user.getUsername());
+            return ResponseEntity.ok(new LoginResponse(token));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body("Nom d'utilisateur ou mot de passe incorrect");
         }
     }
 
     // Endpoint d'inscription (Register)
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
-        if (userRepository.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nom d'utilisateur non diponible");
+        if (userService.findByUsername(registerRequest.getUsername()).isPresent()) {
+            // ResponseEntity.status(401).body("Message à affiché");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Nom d'utilisateur non diponible");//"Nom d'utilisateur déjà utilisé"
         }
 
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRoles(Collections.singleton(new Role("USER"))); // Exemple de rôle par défaut
+        Role defaultRole = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role USER non trouvé"));
+        user.setRoles(Set.of(defaultRole));
 
-        userRepository.save(user);
+        userService.saveUser(user);
 
         return ResponseEntity.ok("Utilisateur enregistré avec succès");
     }

@@ -1,6 +1,6 @@
-package com.garage.security.repository;
+package com.garage.repository;
 
-import com.garage.security.Role;
+import com.garage.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

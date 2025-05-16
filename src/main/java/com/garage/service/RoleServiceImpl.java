@@ -1,15 +1,14 @@
-package com.garage.security.service;
+package com.garage.service;
 
-import com.garage.security.repository.RoleRepository;
-import com.garage.security.entity.Role;
-import com.garage.security.service.RoleService;
+import com.garage.entity.Role;
+import com.garage.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements IRoleService {
 
     private final RoleRepository roleRepository;
 
@@ -24,7 +23,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role save(Role role) {
+    public Role saveRole(Role role) {
         return roleRepository.save(role);
     }
 }
