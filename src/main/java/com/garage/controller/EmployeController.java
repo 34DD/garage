@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/employes")
+@RequestMapping("/api/employes")
 @RequiredArgsConstructor
 public class EmployeController {
     private EmployeServiceImpl employeService;

@@ -1,7 +1,7 @@
 package com.garage.entity;
 
 import com.garage.entity.enummeration.Etats;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

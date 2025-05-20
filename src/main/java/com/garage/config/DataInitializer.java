@@ -25,19 +25,39 @@ public class DataInitializer {
                 userRole.setName("USER");
                 roleService.saveRole(userRole);
             }
+            // Création du rôle ADMIN si non existant
+            if (roleService.findByName("ADMIN").isEmpty()) {
+                Role adminRole = new Role();
+                adminRole.setName("ADMIN");
+                roleService.saveRole(adminRole);
+            }
 
             Role roleUser = roleService.findByName("USER").get();
+            Role roleAdmin = roleService.findByName("ADMIN").get();
 
             // Création d’un utilisateur admin si non existant
             if (userService.findByUsername("admin").isEmpty()) {
-                User user = new User();
-                user.setUsername("admin");
-                user.setPassword(passwordEncoder.encode("admin123")); // mot de passe encodé
-                user.setEnabled(true);
-                user.setRoles(Set.of(roleUser));
-                userService.saveUser(user);
+                User admin = new User();
+                admin.setUsername("admin");
+                admin.setPassword(passwordEncoder.encode("admin123")); // mot de passe encodé
+                admin.setEnabled(true);
+                admin.setRoles(Set.of(roleAdmin));
+                userService.saveUser(admin);
             }
+            
+        // Création de l'utilisateur standard
+        if (userService.findByUsername("user").isEmpty()) {
+            User user = new User();
+            user.setUsername("user");
+            user.setPassword(passwordEncoder.encode("user123"));
+            user.setEnabled(true);
+            user.setRoles(Set.of(roleUser));
+            userService.saveUser(user);
+        }
+        System.out.println("✅ Utilisateurs et rôles initialisés.");
+
         };
+        
     }
 }
 

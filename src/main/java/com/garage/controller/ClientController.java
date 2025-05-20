@@ -5,7 +5,7 @@ import com.garage.entity.Client;
 import com.garage.entity.Client;
 import com.garage.service.ClientServiceImpl;
 import com.garage.service.ClientServiceImpl;
-import jakarta.persistence.Id;
+import javax.persistence.Id;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
